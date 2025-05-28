@@ -13,75 +13,73 @@
  * https://refactoring.guru/es/design-patterns/builder
  */
 
-import { COLORS } from '../helpers/colors.ts';
+type typeCar = "undefined" | "sub" | "turismo" | "4x4";
 
-class Computer {
-  public cpu: string = 'cpu - not defined';
-  public ram: string = 'ram - not defined';
-  public storage: string = 'storage - not defined';
-  public gpu?: string;
+class Car {
+  public motor: string = "motor sin definer";
+  public color: string = "color sin definer";
+  public type: typeCar = "undefined";
+  public compite?: boolean = false;
 
-  displayConfiguration() {
-    console.log(`Configuración de la computadora
-      CPU: ${this.cpu}  
-      RAM: ${this.ram}  
-      Almacenamiento: ${this.storage}  
-      GPU: ${this.gpu ?? 'No tiene GPU'}  
+  displayCar() {
+    console.log(`Este vinculo cuenta con:
+      Motor ${this.motor}
+      chasis ${this.color}
+      tipo ${this.type}
+      turbo ${this.compite}
       `);
   }
 }
 
-class ComputerBuilder {
-  private computer: Computer;
+class CarBuilder {
+  private car: Car;
 
   constructor() {
-    this.computer = new Computer();
+    this.car = new Car();
   }
 
-  setCPU(cpu: string): ComputerBuilder {
-    this.computer.cpu = cpu;
+  setMotor(motor: string): CarBuilder {
+    this.car.motor = motor;
     return this;
   }
 
-  setRAM(ram: string): ComputerBuilder {
-    this.computer.ram = ram;
+  setColor(color: string): CarBuilder {
+    this.car.color = color;
     return this;
   }
 
-  setStorage(storage: string): ComputerBuilder {
-    this.computer.storage = storage;
+  setCompite(compite: boolean): CarBuilder {
+    this.car.compite = compite;
     return this;
   }
 
-  setGPU(gpu: string): ComputerBuilder {
-    this.computer.gpu = gpu;
+  setType(type: typeCar): CarBuilder {
+    this.car.type = type;
     return this;
   }
 
   build() {
-    return this.computer;
+    return this.car;
   }
 }
 
 function main() {
-  const basicComputer: Computer = new ComputerBuilder()
-    .setCPU('Intel Core 2 Dúo')
-    .setRAM('4GB')
-    .setStorage('256GB')
+  const car: Car = new CarBuilder()
+    .setMotor("v8 porche")
+    .setColor("black")
+    .setType("sub")
     .build();
 
-  console.log('%cComputadora básica:', COLORS.blue);
-  basicComputer.displayConfiguration();
+    car.displayCar()
 
-  const gamingComputer = new ComputerBuilder()
-    .setCPU('Intel i9')
-    .setRAM('64GB')
-    .setStorage('1TB M2')
-    .setGPU('Nvidia RTX 5090')
-    .build();
+    const basicCar: Car = new CarBuilder()
+      .setMotor("1.9 gasolina")
+      .setColor("red")
+      .setType("turismo")
+      .setColor('grey')
+      .build();
 
-  console.log('%c\nComputadora gamer\n', COLORS.cyan);
-  gamingComputer.displayConfiguration();
+      basicCar.displayCar();
 }
 
 main();
