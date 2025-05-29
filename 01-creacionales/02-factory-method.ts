@@ -13,82 +13,66 @@
  *
  */
 
-import { COLORS } from '../helpers/colors.ts';
+import { COLORS } from "../helpers/colors.ts";
 
-interface Hamburger {
+interface Menu {
   prepare(): void;
 }
 
-class ChickenHamburger implements Hamburger {
+class PlatoCombinado implements Menu {
   prepare(): void {
-    console.log('Preparando una hamburguesa de %cpollo', COLORS.yellow);
+    console.log("El plato combinado esta en preparación");
   }
 }
 
-class BeefHamburger implements Hamburger {
+class Ración implements Menu {
   prepare(): void {
-    console.log('Preparando una hamburguesa de %cres', COLORS.brown);
-  }
-}
-
-class BeanHamburger implements Hamburger {
-  prepare(): void {
-    console.log('Preparando una hamburguesa de %cfrijol', COLORS.orange);
+    console.log("La ración esta en preparación");
   }
 }
 
 abstract class Restaurant {
-  protected abstract createHamburger(): Hamburger;
+  abstract createMenu(): Menu;
 
-  orderHamburger(): void {
-    const hamburger = this.createHamburger();
-    hamburger.prepare();
+  orderMenu() {
+    const menu = this.createMenu();
+    menu.prepare();
   }
 }
 
-class ChickenRestaurant extends Restaurant {
-  override createHamburger(): Hamburger {
-    return new ChickenHamburger();
+class RacionesSection extends Restaurant {
+  override createMenu(): Menu {
+    return new Ración();
   }
 }
 
-class BeefRestaurant extends Restaurant {
-  override createHamburger(): Hamburger {
-    return new BeefHamburger();
-  }
-}
-
-class BeanRestaurant extends Restaurant {
-  override createHamburger(): Hamburger {
-    return new BeanHamburger();
+class PlatosCombinadosSection extends Restaurant {
+  override createMenu(): Menu {
+    return new PlatoCombinado();
   }
 }
 
 function main() {
   let restaurant: Restaurant;
 
-  const burgerType = prompt(
-    '¿Qué tipo de hamburguesa quieres? ( chicken/beef/bean )'
+  const restaurantSection = prompt(
+    "¿A que sección del restaurante iras? (raciones / platos combinados)"
   );
 
-  switch (burgerType) {
-    case 'chicken':
-      restaurant = new ChickenRestaurant();
+  switch (restaurantSection) {
+    case "raciones":
+      restaurant = new RacionesSection();
       break;
 
-    case 'beef':
-      restaurant = new BeefRestaurant();
-      break;
-
-    case 'bean':
-      restaurant = new BeanRestaurant();
+    case "platos combinados":
+      restaurant = new PlatosCombinadosSection();
       break;
 
     default:
-      throw new Error('Opción no válida');
+      throw new Error("Opción no valida");
   }
 
-  restaurant.orderHamburger();
+  restaurant.orderMenu()
 }
 
 main();

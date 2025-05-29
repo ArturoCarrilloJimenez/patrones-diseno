@@ -24,67 +24,68 @@
       el prompt para seleccionar el tipo de reporte.
  */
 
-import { COLORS } from '../helpers/colors.ts';
+import { COLORS } from "../helpers/colors.ts";
 
-// 1. Definir la interfaz Report
-interface Report {
-  generate(): void;
+// Genero una interfaz del tipo que quiero con los métodos comunes
+interface Reporte {
+  gerente(): void;
 }
 
-// 2. Clases concretas de Reportes
-// Implementar SalesReport e InventoryReport
-
-class SalesReport implements Report {
-  generate(): void {
-    console.log('%cGenerando reporte de ventas...', COLORS.green);
+// Genero los tipos que implementan la interfaz
+class SaleReporte implements Reporte {
+  gerente(): void {
+    console.log("reporte de sala");
   }
 }
 
-class InventoryReport implements Report {
-  generate(): void {
-    console.log('%cGenerando reporte de inventario...', COLORS.orange);
+class InventoryReporte implements Reporte {
+  gerente(): void {
+    console.log("reporte de inventario");
   }
 }
 
-// 3. Clase Base ReportFactory con el Método Factory
+// Clase abstracta para la creación de un objeto y unas subclases se encargan de generar la clase especifica
+abstract class ReporteFactory {
+  abstract createReporte(): Reporte;
 
-abstract class ReportFactory {
-  protected abstract createReport(): Report;
-
-  generateReport(): void {
-    const report = this.createReport();
-    report.generate();
+  generateReport() {
+    const report = this.createReporte()
+    report.gerente()
   }
 }
 
-// 4. Clases Concretas de Fábricas de Reportes
-
-class SalesReportFactory extends ReportFactory {
-  createReport(): Report {
-    return new SalesReport();
+// Subclases que se encarga de genera el objeto indicado
+class SaleReporteFactory extends ReporteFactory {
+  override createReporte(): Reporte {
+    return new SaleReporte();
   }
 }
 
-class InventoryReportFactory extends ReportFactory {
-  createReport(): Report {
-    return new InventoryReport();
+class InventarioReporteFactory extends ReporteFactory {
+  override createReporte(): Reporte {
+    return new InventoryReporte();
   }
 }
 
-// 5. Código Cliente para Probar
 
 function main() {
-  let reportFactory: ReportFactory;
+  let report: ReporteFactory
 
-  const reportType = prompt('¿Qué tipo de reporte deseas? (sales/inventory)');
+  const typeReport = prompt('De que tipo es el reporte (sala/inventario)')
 
-  if (reportType === 'sales') {
-    reportFactory = new SalesReportFactory();
-  } else {
-    reportFactory = new InventoryReportFactory();
+  switch (typeReport) {
+    case "sala":
+      report = new SaleReporteFactory();
+      break;
+    case "inventario":
+      report = new InventarioReporteFactory();
+      break;
+
+    default:
+      throw new Error('Tipo no valido');
   }
 
-  reportFactory.generateReport();
+  report.generateReport()
 }
 
 main();
