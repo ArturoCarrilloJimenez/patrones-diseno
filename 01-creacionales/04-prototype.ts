@@ -1,7 +1,7 @@
 /**
  * ! Patrón Prototype:
 
- * Es un patrón de diseño creacional que nos permite copiar objetos existentes sin hacer
+ * Es un patrón de diseño creaciones que nos permite copiar objetos existentes sin hacer
  * que el código dependa de sus clases.
  * 
  * * Es útil cuando queremos duplicar el contenido, 
@@ -10,41 +10,28 @@
  * https://refactoring.guru/es/design-patterns/prototype
  */
 
-class Document {
-  public title: string;
-  private content: string;
-  public author: string;
+class Documento {
+  private title: string;
+  private description: string;
+  private autor: string;
 
-  constructor(title: string, content: string, author: string) {
+  constructor(title: string, description: string, autor: string) {
     this.title = title;
-    this.content = content;
-    this.author = author;
+    this.description = description;
+    this.autor = autor;
   }
 
-  clone(): Document {
-    return new Document(this.title, this.content, this.author);
+  clone() {
+    return new Documento(this.title, this.description, this.autor);
   }
 
   displayInfo() {
-    console.log(`
-      Title: ${this.title}
-      Content: ${this.content}
-      Author: ${this.author}
-    `);
+    console.log(this.title + " - " + this.description + " - " + this.autor);
   }
 }
 
 function main() {
-  const document1 = new Document('Cotización', '500 dólares', 'Fernando');
+  const document = new Documento("prueba", "description", "autor");
 
-  console.log({ document1 });
-  document1.displayInfo();
-
-  const document2 = document1.clone();
-  document2.title = 'Nueva cotización';
-
-  console.log({ document2 });
-  document2.displayInfo();
+  document.displayInfo();
 }
-
-main();
